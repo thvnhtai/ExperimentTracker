@@ -1,24 +1,7 @@
 from pydantic import BaseModel, Field
-from typing import Dict, List, Optional, Any, Union
+from typing import Dict, List, Optional, Any
 from datetime import datetime
 
-# Experiment schemas
-class ExperimentBase(BaseModel):
-    name: str
-    description: Optional[str] = None
-
-class ExperimentCreate(ExperimentBase):
-    pass
-
-class ExperimentResponse(ExperimentBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
-    
-    class Config:
-        from_attributes = True
-
-# Job schemas
 class JobParameters(BaseModel):
     model_type: str = Field("cnn", description="Model type (cnn or nn)")
     epochs: int = Field(5, description="Number of training epochs")
@@ -61,7 +44,6 @@ class JobWithHistory(JobResponse):
     class Config:
         from_attributes = True
 
-# Job status update schema
 class JobStatusUpdate(BaseModel):
     status: str
     progress: Optional[float] = None
