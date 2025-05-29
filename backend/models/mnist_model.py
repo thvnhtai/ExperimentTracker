@@ -6,22 +6,40 @@ import torch.nn.functional as F
 class SimpleCNN(nn.Module):
     def __init__(self, dropout_rate=0.5, hidden_size=128, kernel_size=3):
         super(SimpleCNN, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=kernel_size)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=kernel_size)
+        
+        # Calculate padding to maintain spatial dimensions
+        padding = kernel_size // 2
+        
+        # First convolutional block
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=kernel_size, padding=padding)
+        self.bn1 = nn.BatchNorm2d(32)
+        
+        # Second convolutional block
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=kernel_size, padding=padding)
+        self.bn2 = nn.BatchNorm2d(64)
         
         # Calculate the size after convolutions and max-pooling
-        # For MNIST (28x28), after 2 convolutions with kernel_size=3 and stride=1,
-        # and 2 max-poolings with kernel_size=2, the size becomes 5x5
-        self.fc1 = nn.Linear(64 * 5 * 5, hidden_size)
+        # With padding, the size remains 28x28 after convolutions
+        # After two max-poolings (kernel_size=2), the size becomes 7x7
+        self.fc1 = nn.Linear(64 * 7 * 7, hidden_size)
         
         self.dropout = nn.Dropout(dropout_rate)
         self.fc2 = nn.Linear(hidden_size, 10)
     
     def forward(self, x):
-        x = F.relu(self.conv1(x))
+        # First conv block
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = F.relu(x)
         x = F.max_pool2d(x, 2)
-        x = F.relu(self.conv2(x))
+        
+        # Second conv block
+        x = self.conv2(x)
+        x = self.bn2(x)
+        x = F.relu(x)
         x = F.max_pool2d(x, 2)
+        
+        # Flatten and fully connected layers
         x = torch.flatten(x, 1)
         x = F.relu(self.fc1(x))
         x = self.dropout(x)

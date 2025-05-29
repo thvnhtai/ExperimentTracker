@@ -60,16 +60,11 @@ export default function HomePage() {
 	const failedJobs = jobs.filter((job) => job.status === "failed").length;
 
 	const bestJob = jobs
-		.filter(
-			(job) => job.best_accuracy !== undefined && job.best_accuracy !== null
-		)
+		.filter((job) => job.best_accuracy !== undefined && job.best_accuracy !== null)
 		.sort((a, b) => (b.best_accuracy || 0) - (a.best_accuracy || 0))[0];
 
 	const recentJobs = [...jobs]
-		.sort(
-			(a, b) =>
-				new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-		)
+		.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 		.slice(0, 5);
 
 	const formatDate = (dateString: string) => {
@@ -136,16 +131,12 @@ export default function HomePage() {
 				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 					<Card>
 						<CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-							<CardTitle className="text-sm font-medium">
-								Total Experiments
-							</CardTitle>
+							<CardTitle className="text-sm font-medium">Total Experiments</CardTitle>
 							<Layers className="h-4 w-4 text-muted-foreground" />
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold">{totalExperiments}</div>
-							<p className="text-xs text-muted-foreground mt-1">
-								ML Experiment groups
-							</p>
+							<p className="text-xs text-muted-foreground mt-1">ML Experiment groups</p>
 						</CardContent>
 					</Card>
 					<Card>
@@ -156,9 +147,7 @@ export default function HomePage() {
 						<CardContent>
 							<div className="text-2xl font-bold">{totalJobs}</div>
 							<div className="flex space-x-2 text-xs text-muted-foreground mt-1">
-								<span className="text-green-500">
-									{completedJobs} completed
-								</span>
+								<span className="text-green-500">{completedJobs} completed</span>
 								<span>•</span>
 								<span className="text-blue-500">{runningJobs} running</span>
 								<span>•</span>
@@ -168,9 +157,7 @@ export default function HomePage() {
 					</Card>
 					<Card>
 						<CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-							<CardTitle className="text-sm font-medium">
-								Best Accuracy
-							</CardTitle>
+							<CardTitle className="text-sm font-medium">Best Accuracy</CardTitle>
 							<TrendingUp className="h-4 w-4 text-muted-foreground" />
 						</CardHeader>
 						<CardContent>
@@ -178,9 +165,7 @@ export default function HomePage() {
 								{bestJob ? `${bestJob.best_accuracy?.toFixed(2)}%` : "N/A"}
 							</div>
 							<p className="text-xs text-muted-foreground mt-1">
-								{bestJob
-									? `Model: ${bestJob.model_type.toUpperCase()}`
-									: "No completed jobs yet"}
+								{bestJob ? `Model: ${bestJob.model_type.toUpperCase()}` : "No completed jobs yet"}
 							</p>
 						</CardContent>
 					</Card>
@@ -191,9 +176,7 @@ export default function HomePage() {
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold">{runningJobs}</div>
-							<p className="text-xs text-muted-foreground mt-1">
-								Currently running
-							</p>
+							<p className="text-xs text-muted-foreground mt-1">Currently running</p>
 						</CardContent>
 					</Card>
 				</div>
@@ -204,9 +187,7 @@ export default function HomePage() {
 					<Card className="md:col-span-4">
 						<CardHeader>
 							<CardTitle>Recent Activity</CardTitle>
-							<CardDescription>
-								Your latest training jobs and experiments
-							</CardDescription>
+							<CardDescription>Your latest training jobs and experiments</CardDescription>
 						</CardHeader>
 						<CardContent>
 							{recentJobs.length > 0 ? (
@@ -227,11 +208,7 @@ export default function HomePage() {
 											<div className="flex items-center gap-3">
 												{renderStatusBadge(job.status)}
 												<Link href={`/jobs/${job.job_id}`}>
-													<Button
-														variant="ghost"
-														size="sm"
-														className="p-0 h-8 w-8 rounded-full"
-													>
+													<Button variant="ghost" size="sm" className="p-0 h-8 w-8 rounded-full">
 														<ArrowRight className="h-4 w-4" />
 													</Button>
 												</Link>
@@ -268,9 +245,7 @@ export default function HomePage() {
 								<div className="space-y-4">
 									{experiments
 										.sort(
-											(a, b) =>
-												new Date(b.created_at).getTime() -
-												new Date(a.created_at).getTime()
+											(a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 										)
 										.slice(0, 3)
 										.map((experiment) => (
@@ -282,14 +257,10 @@ export default function HomePage() {
 												<div className="p-3 rounded-lg border hover:border-primary hover:bg-accent transition-colors">
 													<div className="font-medium">{experiment.name}</div>
 													<div className="text-sm text-muted-foreground mt-1 line-clamp-1">
-														{experiment.description ||
-															"No description provided."}
+														{experiment.description || "No description provided."}
 													</div>
 													<div className="text-xs text-muted-foreground mt-2">
-														Created on{" "}
-														{new Date(
-															experiment.created_at
-														).toLocaleDateString()}
+														Created on {new Date(experiment.created_at).toLocaleDateString()}
 													</div>
 												</div>
 											</Link>
@@ -319,7 +290,7 @@ export default function HomePage() {
 					<CardHeader>
 						<CardTitle>Getting Started</CardTitle>
 						<CardDescription>
-							Learn how to use Experiment Hub for ML experimentation.
+							Learn how to use Experiment Tracker for ML experimentation.
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="grid gap-4 md:grid-cols-3">
@@ -331,8 +302,8 @@ export default function HomePage() {
 								<h3 className="font-semibold">Create an Experiment</h3>
 							</div>
 							<p className="text-sm text-muted-foreground">
-								Start by creating an experiment to group related training jobs.
-								This helps you organize different approaches to a problem.
+								Start by creating an experiment to group related training jobs. This helps you
+								organize different approaches to a problem.
 							</p>
 						</div>
 						<div className="p-4 rounded-lg border">
@@ -343,9 +314,8 @@ export default function HomePage() {
 								<h3 className="font-semibold">Configure Training Jobs</h3>
 							</div>
 							<p className="text-sm text-muted-foreground">
-								Add training jobs with different hyperparameters to find the
-								best model. Try varying learning rates, batch sizes, and model
-								architectures.
+								Add training jobs with different hyperparameters to find the best model. Try varying
+								learning rates, batch sizes, and model architectures.
 							</p>
 						</div>
 						<div className="p-4 rounded-lg border">
@@ -356,9 +326,8 @@ export default function HomePage() {
 								<h3 className="font-semibold">Compare Results</h3>
 							</div>
 							<p className="text-sm text-muted-foreground">
-								Review and compare job results to identify the best performing
-								model. Look at accuracy metrics, training curves, and
-								convergence speed.
+								Review and compare job results to identify the best performing model. Look at
+								accuracy metrics, training curves, and convergence speed.
 							</p>
 						</div>
 					</CardContent>

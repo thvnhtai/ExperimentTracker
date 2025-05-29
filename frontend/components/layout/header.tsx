@@ -6,7 +6,7 @@ export function Header() {
 		<header className="bg-background border-b">
 			<div className="container flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8 mx-auto">
 				<Link href="/" className="font-bold text-2xl">
-					Experiment Hub
+					Experiment Tracker
 				</Link>
 				<nav className="flex items-center gap-4">
 					<Link href="/" legacyBehavior>
